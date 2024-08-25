@@ -1,9 +1,11 @@
-import { Controller, Post, Get, Put, Param, Body } from '@nestjs/common';
+import { Controller, Post, Get, Put, Param, Body, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AuthGuard } from 'src/auth/auth.gaurd';
 
 @Controller('users')
+@UseGuards(AuthGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -20,6 +22,10 @@ export class UserController {
   @Get(':id')
   async getUser(@Param('id') id: number) {
     return this.userService.getUser(id);
+  }
+  @Get()
+  async getAll(){
+    return this.userService.getAll();
   }
 
   @Put(':id')
