@@ -12,6 +12,11 @@ export class UserController {
     return this.userService.createUser(createUserDto);
   }
 
+  @Post('bulk')
+  createManyUsers(@Body() createUserDtos: CreateUserDto[]) {
+    return this.userService.createManyUsers(createUserDtos);
+  }
+
   @Get(':id')
   async getUser(@Param('id') id: number) {
     return this.userService.getUser(id);

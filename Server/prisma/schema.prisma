@@ -49,3 +49,5 @@ model RoomUser {
   user    User   @relation(fields: [userId], references: [id])
   @@unique([roomId, userId])
 }
+
+

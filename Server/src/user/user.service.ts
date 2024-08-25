@@ -11,6 +11,10 @@ export class UserService {
     return this.prisma.user.create({ data });
   }
 
+  async createManyUsers(data: CreateUserDto[]) {
+    return this.prisma.user.createMany({ data });
+  }
+
   async getUser(id: number) {
     return this.prisma.user.findUnique({ where: { id } });
   }

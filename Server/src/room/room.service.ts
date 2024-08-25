@@ -20,4 +20,12 @@ export class RoomService {
       },
     });
   }
+  async removeUserFromRoom(roomId: number, userId: number) {
+    return this.prisma.roomUser.deleteMany({
+      where: {
+        roomId,
+        userId,
+      },
+    });
+  }
 }
