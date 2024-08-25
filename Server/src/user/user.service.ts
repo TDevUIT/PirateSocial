@@ -19,7 +19,21 @@ export class UserService {
     return this.prisma.user.findUnique({ where: { id } });
   }
 
+  async getAll(){
+    return this.prisma.user.findMany();
+  }
+
   async updateUser(id: number, data: UpdateUserDto) {
     return this.prisma.user.update({ where: { id }, data });
+  }
+
+  async findOneBy(email: string) {
+    return this.prisma.user.findUnique({
+      where: { email },
+    });
+  }
+
+  async insertOne(data: CreateUserDto) {
+    return this.prisma.user.create({ data });
   }
 }
