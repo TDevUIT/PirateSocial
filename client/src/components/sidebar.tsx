@@ -104,7 +104,7 @@ const Sidebar = () => {
       </div>
       <ul className="space-y-4 p-2">
         {contacts.map((contact, index) => (
-          <Link href={`/message/${index}`} key={index}>
+          <Link href={`/messages/${index}`} key={index}>
             <li  className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer">
               <Image height={200} width={200} src={contact.imgSrc} alt={contact.name} className="w-10 h-10 rounded-full object-cover" />
               <div className="flex-grow">

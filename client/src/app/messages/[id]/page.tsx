@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import Message from '@/components/message';
-import { Paperclip, Smile } from 'lucide-react';  // Importing icons from react-lucide
+import { Paperclip, Smile } from 'lucide-react'; 
 
 const MessagePage = () => {
   const [messages, setMessages] = useState([
