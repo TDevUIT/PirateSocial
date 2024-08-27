@@ -1,0 +1,19 @@
+import React from 'react';
+import { Button } from './ui/button';
+
+const Navbar = () => {
+  return (
+    <nav className='h-[10vh] flex justify-between items-center px-4 container'>
+      <div className='text-2xl font-bold'>
+        Pirate Social
+      </div>
+      <div>
+        <Button variant='default' className=' hover:bg-blue-700 hover:text-white text-black font-bold py-2 px-4 rounded-full border border-solid border-gray-700 bg-white'>
+          Get Started
+        </Button>
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;

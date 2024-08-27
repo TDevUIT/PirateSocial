@@ -64,10 +64,7 @@ export default function RootLayout({
           fontSans.variable
         )}>
           <div className="flex h-screen">
-            <Sidebar />
-            <main className="flex-grow">
-              {children}
-            </main>
+            {children}
           </div>
         </body>
     </html>
