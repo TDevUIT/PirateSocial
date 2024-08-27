@@ -1,17 +1,62 @@
-import { Button } from "@/components/ui/button";
+'use client'
 import Link from "next/link";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
+const schema = z.object({
+  email: z.string().min(3, { message: "Email is required" }).email("Invalid email address"),
+  password: z.string().min(8, { message: "Password needs to be at least 8 characters long" }),
+});
+
+type SignInFormData = z.infer<typeof schema>;
+
 const SignInPage: React.FC = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm<SignInFormData>({
+    resolver: zodResolver(schema),
+    mode: "onBlur",
+    reValidateMode: "onChange",
+    shouldFocusError: true,
+  });
+
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("rememberEmail");
+    const storedPassword = localStorage.getItem("rememberPassword");
+    
+    if (storedEmail && storedPassword) {
+      console.log("Stored credentials found");
+      setValue("email", storedEmail);
+      setValue("password", storedPassword);
+    }
+  }, []);
+
+  const onSubmit = (data: SignInFormData) => {
+    if (rememberMe) {
+      localStorage.setItem("rememberEmail", data.email);
+      localStorage.setItem("rememberPassword", data.password);
+    } else {
+      localStorage.removeItem("rememberEmail");
+      localStorage.removeItem("rememberPassword");
+    }
+    console.log(data); 
+  };
+
   return (
     <div className="flex items-center justify-center h-screen w-full p-8">
       <div className="rounded-lg p-20 w-full">
         <h2 className="text-4xl font-semibold mb-2">Welcome back</h2>
-        <p className="mb-4">Start your website in seconds. Don&apos;t have an account? Sign up.</p>
-        <form className="space-y-4">
+        <p className="mb-4">Start your journey in seconds. Don&apos;t have an account? Sign up.</p>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="flex flex-col gap-y-4 w-full justify-between">
-           
             <div className="mt-6 flex w-full gap-x-4">
               <div className="w-full">
                 <Link href="#" className="text-sm font-medium w-full">
@@ -44,11 +89,13 @@ const SignInPage: React.FC = () => {
               <input
                 type="email"
                 id="email"
+                {...register("email")}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md 
                 shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 placeholder="name@email.com"
                 required
               />
+              {errors.email && <p className="text-red-500 text-sm mt-2">{errors.email.message}</p>}
             </div>
             <div className="w-full">
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
@@ -57,10 +104,12 @@ const SignInPage: React.FC = () => {
               <input
                 type="password"
                 id="password"
+                {...register("password")}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 placeholder="***********"
                 required
               />
+              {errors.password && <p className="text-red-500 text-sm mt-2">{errors.password.message}</p>}
             </div>
           </div>
           <div className="flex items-center justify-between">
@@ -68,6 +117,8 @@ const SignInPage: React.FC = () => {
               <input
                 id="remember-me"
                 type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
               <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">

@@ -1,31 +1,62 @@
+'use client'
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";
 import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
+const schema = z
+  .object({
+    email: z.string().min(3, { message: "Email is required" }).email("Invalid email address"),
+    password: z.string().min(8, { message: "Password needs to be at least 8 characters long" }),
+    fullName: z.string().min(8, { message: "Full name must be at least 8 characters long" }),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ["confirmPassword"], 
+    message: "Passwords don't match",
+  });
+
+type SignUpFormData = z.infer<typeof schema>;
 
 const SignUpPage: React.FC = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignUpFormData>({
+    resolver: zodResolver(schema),
+    mode: "onBlur",
+    reValidateMode: "onChange",
+    shouldFocusError: true,
+  });
+
+  const onSubmit = (data: SignUpFormData) => {
+    console.log(data); 
+  };
+
   return (
     <div className="flex items-center justify-center h-screen w-full p-8 overflow-hidden">
       <div className="rounded-lg p-20 w-full">
         <h2 className="text-4xl font-semibold mb-2">Create an account</h2>
         <p className="mb-4">Join us and start your journey today. Already have an account? Sign in.</p>
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="flex flex-col gap-y-4 w-full justify-between">
             <div className="mt-6 flex w-full gap-x-4">
               <div className="w-full">
                 <Link href="#" className="text-sm font-medium w-full">
-                  <button className="w-full flex items-center justify-center space-x-2 px-4 
-                  py-2 rounded-md shadow-lg hover:bg-white transition">
-                    <FcGoogle className="w-5 h-5" /> 
+                  <button className="w-full flex items-center justify-center space-x-2 px-4 py-2 rounded-md shadow-lg hover:bg-white transition">
+                    <FcGoogle className="w-5 h-5" />
                     <span>Sign up with Google</span>
                   </button>
                 </Link>
               </div>
               <div className="w-full">
                 <Link href="#" className="text-sm font-medium w-full">
-                  <button className="w-full flex items-center 
-                  justify-center space-x-2 px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition">
+                  <button className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition">
                     <FaApple className="w-5 h-5" />
                     <span>Sign up with Apple</span>
                   </button>
@@ -44,12 +75,12 @@ const SignUpPage: React.FC = () => {
                 </label>
                 <input
                   type="text"
-                  id="full-name"
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md 
-                  shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  id="fullName"
+                  {...register("fullName")}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   placeholder="John Doe"
-                  required
                 />
+                {errors.fullName && <p className="text-red-500 text-sm mt-2">{errors.fullName.message}</p>}
               </div>
               <div className="w-full">
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -58,11 +89,11 @@ const SignUpPage: React.FC = () => {
                 <input
                   type="email"
                   id="email"
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md 
-                  shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  {...register("email")}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   placeholder="name@email.com"
-                  required
                 />
+                {errors.email && <p className="text-red-500 text-sm mt-2">{errors.email.message}</p>}
               </div>
             </div>
             <div className="w-full">
@@ -72,10 +103,11 @@ const SignUpPage: React.FC = () => {
               <input
                 type="password"
                 id="password"
+                {...register("password")}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 placeholder="***********"
-                required
               />
+              {errors.password && <p className="text-red-500 text-sm mt-2">{errors.password.message}</p>}
             </div>
             <div className="w-full">
               <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700">
@@ -83,11 +115,12 @@ const SignUpPage: React.FC = () => {
               </label>
               <input
                 type="password"
-                id="confirm-password"
+                id="confirmPassword"
+                {...register("confirmPassword")}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 placeholder="***********"
-                required
               />
+              {errors.confirmPassword && <p className="text-red-500 text-sm mt-2">{errors.confirmPassword.message}</p>}
             </div>
           </div>
           <button
