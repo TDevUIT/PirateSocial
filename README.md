@@ -24,7 +24,7 @@ PirateSocial is a web-based chat application that connects individuals who have 
 
 - **NestJS**: A progressive Node.js framework for building efficient and scalable server-side applications.
 - **Socket.io**: To handle real-time communication on the backend.
-- **TypeORM**: An ORM tool to interact with databases efficiently.
+- **Prisma**: An ORM tool to interact with databases efficiently.
 - **PostgreSQL**: A powerful, open-source relational database.
 - **JWT (JSON Web Tokens)**: For authentication and session management.
 
@@ -40,7 +40,7 @@ PirateSocial is a web-based chat application that connects individuals who have 
 ### Prerequisites
 
 - Node.js (>= 14.x)
-- PostgreSQL
+- PostgreSQL (>= 14.x)
 - Docker (optional, but recommended)
 
 ### Installation
