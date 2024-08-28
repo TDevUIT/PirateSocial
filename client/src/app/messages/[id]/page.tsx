@@ -30,7 +30,9 @@ const MessagePage = () => {
 
       <div className="flex-grow overflow-y-auto p-4 space-y-4 bg-gray-300">
         {messages.map((message) => (
-          <Message key={message.id} text={message.text} time={message.time} />
+          <div key={message.id}>
+            <Message key={message.id} text={message.text} time={message.time} />
+          </div>
         ))}
       </div>
 

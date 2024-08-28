@@ -6,15 +6,11 @@ export default function MessageLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
-          <div className="flex h-screen">
-            <Sidebar />
-            <main className="flex-grow">
-              {children}
-            </main>
-          </div>
-        </body>
-    </html>
+    <div className="flex h-screen w-full">
+      <Sidebar />
+      <main className="flex-grow">
+        {children}
+      </main>
+    </div>
   );
 }
