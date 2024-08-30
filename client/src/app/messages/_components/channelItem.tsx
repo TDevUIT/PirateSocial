@@ -14,7 +14,7 @@ interface ChannelItemProps {
 }
 
 const ChannelItem: React.FC<ChannelItemProps> = ({ channel, index }) => (
-    <Link href={`/channels/${index}`} key={index}>
+    <Link href={`/channels/${index}`} key={index} >
         <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer">
           <div className="relative">
             <Image
