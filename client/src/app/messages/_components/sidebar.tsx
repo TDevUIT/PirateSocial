@@ -5,6 +5,8 @@ import ChannelItem from './channelItem';
 import WorkItem from './workItem';
 import GroupItem from './groupItem';
 import ContactItem from './contactItem';
+import ProfileSidebar from './profileSidebar';
+import ReelStory from './ReelStory';
 const contacts = [
   { name: 'Lauri Edmon', status: 'Writing...', time: '12.52', unread: 2, imgSrc: '/icons/android-chrome-192x192.png', category: 'Private' },
   { name: 'Julian Gruber', status: 'Send audio...', time: '20.25', unread: 2, imgSrc: '/icons/android-chrome-192x192.png', category: 'Private' },
@@ -27,25 +29,45 @@ const work = [
   { name: 'Client Meeting', status: 'Discuss project requirements...', time: '11:00', unread: 1, imgSrc: '/icons/android-chrome-192x192.png', category: 'Work' },
   { name: 'Code Review', status: 'Review pull requests...', time: '17:00', unread: 3, imgSrc: '/icons/android-chrome-192x192.png', category: 'Work' },
 ];
-
-const Sidebar = () => {
+const reels = [
+  { name: 'Lauri Edmon', videoSrc: '/videos/reel1.mp4', imgSrc: '/icons/android-chrome-192x192.png' },
+  { name: 'Julian Gruber', videoSrc: '/videos/reel1.mp4', imgSrc: '/icons/android-chrome-192x192.png' },
+  { name: 'Karlien Nihen', videoSrc: '/videos/reel1.mp4', imgSrc: '/icons/android-chrome-192x192.png' },
+];
+const Sidebar = ({className} : {className: any}) => {
   const [activeItem, setActiveItem] = useState('All');
-
+  const [showProfile, setShowProfile] = useState(false);
+  const [showReel, setShowReel] = useState(false);
+  const [currentReelIndex, setCurrentReelIndex] = useState(0);
   const handleClick = (item: string) => {
     setActiveItem(item);
   };
 
+  const handleClickReel = (index: number) => {
+    setCurrentReelIndex(index);
+    setShowReel(true);
+  };
+
+  const nextReel = () => {
+    setCurrentReelIndex((prev) => (prev + 1) % reels.length);
+  };
+
+  const prevReel = () => {
+    setCurrentReelIndex((prev) => (prev - 1 + reels.length) % reels.length);
+  };
   const filteredContacts = activeItem === 'All' ? contacts : contacts.filter(contact => contact.category === activeItem);
   const filteredGroups = activeItem === 'All' ? groups : groups.filter(group => group.category === activeItem);
   const filteredChannels = activeItem === 'All' ? channels : channels.filter(channel => channel.category === activeItem);
   const filteredWork = activeItem === 'All' ? work : work.filter(w => w.category === activeItem);
 
   return (
-    <aside className="min-w-1/4 w-full md:w-1/4 h-screen bg-white shadow-md overflow-y-auto sidebar">
+    <>
+    <aside className={`min-w-1/4 w-full md:w-1/4 h-screen bg-white shadow-md overflow-y-auto sidebar ${className}`}>
       <div className="flex items-center px-4 py-2">
         <button
           aria-haspopup="true"
           className="p-2 text-gray-700 rounded-full focus:outline-none hover:text-gray-600 hover:bg-gray-200"
+          onClick={() => setShowProfile(true)}
         >
             <svg
               className="w-6 h-6"
@@ -60,6 +82,7 @@ const Sidebar = () => {
               ></path>
             </svg>
         </button>
+        
         <div className="flex items-center flex-grow bg-gray-300 rounded-full ml-2 p-1">
           <Search className='w-[20px] h-[20px] ml-2 text-gray-600 me-2'/>
           <input
@@ -69,6 +92,21 @@ const Sidebar = () => {
           />
         </div>
       </div>
+      {/* <div className="w-full overflow-x-auto flex space-x-4 px-4 py-2">
+          {reels.map((reel, index) => (
+            <div key={index} className="flex flex-col justify-center items-center">
+              <Image
+                src={reel.imgSrc}
+                alt={reel.name}
+                width={200}
+                height={200}
+                className="w-8 h-8 rounded-full border-2 border-white cursor-pointer"
+                onClick={() => handleClickReel(index)}
+              />
+              <p className="text-black text-xs">{reel.name}</p>
+            </div>
+          ))}
+        </div> */}
       <div className='flex items-center justify-between px-6 border-b-2 w-full'>
         {['All', 'Work', 'Private', 'Groups', 'Channels'].map(item => (
           <span 
@@ -96,6 +134,18 @@ const Sidebar = () => {
         ))}
       </ul>
     </aside>
+    {showReel && (
+        <ReelStory
+          reels={reels}
+          currentReelIndex={currentReelIndex}
+          setShowReel={setShowReel}
+          nextReel={nextReel}
+          prevReel={prevReel}
+        />
+      )}
+    {showProfile && <ProfileSidebar showProfile={showProfile} setShowProfile={setShowProfile} />}
+
+    </>
   );
 };
 
