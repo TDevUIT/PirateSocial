@@ -40,17 +40,18 @@ const SignUpPage: React.FC = () => {
 
   return (
     <div className="flex items-center justify-center h-screen w-full p-8 overflow-hidden">
-      <div className="rounded-lg p-20 w-full">
-        <h2 className="text-4xl font-semibold mb-2">Create an account</h2>
+      <div className="rounded-lg md:p-10 lg:p-20 w-full">
+        <h2 className="md:text-4xl text-3xl font-semibold mb-2 md:mt-0 mt-2">Create an account</h2>
         <p className="mb-4">Join us and start your journey today. Already have an account? Sign in.</p>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="flex flex-col gap-y-4 w-full justify-between">
             <div className="mt-6 flex w-full gap-x-4">
               <div className="w-full">
                 <Link href="#" className="text-sm font-medium w-full">
-                  <button className="w-full flex items-center justify-center space-x-2 px-4 py-2 rounded-md shadow-lg hover:bg-white transition">
-                    <FcGoogle className="w-5 h-5" />
-                    <span>Sign up with Google</span>
+                  <button className="w-full flex items-center justify-center space-x-2 px-4 
+                  py-2 rounded-md shadow-lg hover:bg-white transition">
+                    <FcGoogle className="w-5 h-5" /> 
+                    <span>Sign in with Google</span>
                   </button>
                 </Link>
               </div>

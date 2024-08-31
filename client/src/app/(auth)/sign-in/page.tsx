@@ -37,7 +37,7 @@ const SignInPage: React.FC = () => {
       setValue("email", storedEmail);
       setValue("password", storedPassword);
     }
-  }, []);
+  }, [setValue]);
 
   const onSubmit = (data: SignInFormData) => {
     if (rememberMe) {
@@ -52,7 +52,7 @@ const SignInPage: React.FC = () => {
 
   return (
     <div className="flex items-center justify-center h-screen w-full p-8">
-      <div className="rounded-lg p-20 w-full">
+      <div className="rounded-lg md:p-10 lg:p-20 w-full">
         <h2 className="text-4xl font-semibold mb-2">Welcome back</h2>
         <p className="mb-4">Start your journey in seconds. Don&apos;t have an account? Sign up.</p>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -126,7 +126,7 @@ const SignInPage: React.FC = () => {
               </label>
             </div>
             <div className="text-sm">
-              <Link href="#" className="font-medium text-blue-600 hover:text-blue-500">
+              <Link href="/forgot" className="font-medium text-blue-600 hover:text-blue-500">
                 Forgot password?
               </Link>
             </div>
