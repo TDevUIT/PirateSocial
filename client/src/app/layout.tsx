@@ -3,6 +3,8 @@ import { Inter as FontSans } from "next/font/google"
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ToggleProvider } from "@/context/control";
+import ToastContainer from "@/components/ToastContainer";
+import { ToastProvider } from "@/context/ToastContext";
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -64,9 +66,12 @@ export default function RootLayout({
           fontSans.variable
         )}>
           <ToggleProvider>
-            <div className="flex h-screen">
-              {children}
-            </div>
+            <ToastProvider>
+              <div className="flex h-screen">
+                {children}
+              </div>
+              <ToastContainer />
+            </ToastProvider>
           </ToggleProvider>
         </body>
     </html>

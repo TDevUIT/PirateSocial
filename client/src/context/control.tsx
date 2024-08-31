@@ -28,7 +28,8 @@ export const ToggleProvider: React.FC<ToggleProviderProps> = ({ children }) => {
 
     return (
         <ToggleContext.Provider value={{ showChildren, toggleChildren }}>
-        {children}
+          {children}
+          
         </ToggleContext.Provider>
     );
 };

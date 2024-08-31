@@ -2,7 +2,10 @@
 import { XIcon, Settings, Wallet, User, LogOut, Mail, UserPlus } from 'lucide-react';
 import React, { useState } from 'react';
 import MyProfile from './myProfile';
-// Import other components when available
+import SavedMessages from './savedMessage';
+import InviteFriends from './inviteFriend';
+import AccountSettings from './settingsAccount';
+import WalletPage from './walletPage';
 // import WalletPage from './WalletPage';
 // import SavedMessages from './SavedMessages';
 // import InviteFriends from './InviteFriends';
@@ -17,22 +20,24 @@ interface ProfileSidebarProps {
 const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ showProfile, setShowProfile }) => {
   const [selectedOption, setSelectedOption] = useState<string>('MyProfile');
   const [showMyProfile, setShowMyProfile] = useState<boolean>(false);
-
+  const [showSavedMessages, setShowSavedMessages] = useState<boolean>(false);
+  const [showInviteFriends, setshowInviteFriends] = useState<boolean>(false);
+  const [showAccountSettings, setShowAccountSettings] = useState<boolean>(false);
+  const [showWallet, setShowWallet] = useState<boolean>(false);
   const renderSelectedOption = () => {
     switch (selectedOption) {
       case 'MyProfile':
         return (
           <MyProfile showMyProfile={showMyProfile} setShowMyProfile={setShowMyProfile} />
         );
-      // Add cases for other components when implemented
-      // case 'Wallet':
-      //   return <WalletPage />;
-      // case 'SavedMessages':
-      //   return <SavedMessages />;
-      // case 'InviteFriends':
-      //   return <InviteFriends />;
-      // case 'AccountSettings':
-      //   return <AccountSettings />;
+      case 'Wallet':
+        return <WalletPage showWallet={showWallet} setShowWallet={setShowWallet} />;
+      case 'SavedMessages':
+        return <SavedMessages showSavedMessages={showSavedMessages} setShowSavedMessages={setShowSavedMessages}/>;
+      case 'InviteFriends':
+        return <InviteFriends showInviteFriends={showInviteFriends} setShowInviteFriends={setshowInviteFriends}/>;
+      case 'AccountSettings':
+        return <AccountSettings showAccountSettings={showAccountSettings} setShowAccountSettings={setShowAccountSettings} />;
       // case 'LogOut':
       //   return <LogOutPage />;
       default:
@@ -65,30 +70,45 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ showProfile, setShowPro
               label="My Profile"
               icon={<User className="w-5 h-5 mr-3" />}
               onClick={() => {
-                setSelectedOption('MyProfile');
-                setShowMyProfile(true); // Show MyProfile when selected
+                setSelectedOption('MyProfile')
+                setShowMyProfile(true)
               }}
             />
             <SidebarOption
               label="Wallet"
               icon={<Wallet className="w-5 h-5 mr-3" />}
-              onClick={() => setSelectedOption('Wallet')}
+              onClick={() => {
+                  setSelectedOption('Wallet')
+                  setShowWallet(true)
+                }
+              }
             />
             <SidebarOption
               label="Saved Messages"
               icon={<Mail className="w-5 h-5 mr-3" />}
-              onClick={() => setSelectedOption('SavedMessages')}
+              onClick={() => 
+                {
+                setSelectedOption('SavedMessages')
+                setShowSavedMessages(true)
+
+               }}
             />
             <SidebarOption
               label="Invite Friends"
               icon={<UserPlus className="w-5 h-5 mr-3" />}
-              onClick={() => setSelectedOption('InviteFriends')}
+              onClick={() => {
+                setSelectedOption('InviteFriends')
+                setshowInviteFriends(true)
+              }}
             />
             <SidebarOption
               label="Account Settings"
               icon={<Settings className="w-5 h-5 mr-3" />}
-              onClick={() => setSelectedOption('AccountSettings')}
-            />
+              onClick={() => {
+                setSelectedOption('AccountSettings')
+                setShowAccountSettings(true)
+              }}
+              />
             <SidebarOption
               label="Log Out"
               icon={<LogOut className="w-5 h-5 mr-3" />}
