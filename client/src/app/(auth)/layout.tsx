@@ -11,7 +11,7 @@ const AuthLayout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <div className="flex h-screen w-full overflow-hidden max-h-screen">
+    <div className="flex flex-col md:flex-row h-screen w-full overflow-hidden max-h-screen">
       <div className="flex-grow h-full w-full flex items-center justify-center bg-gray-100 relative">
         <Link href="/">
           <div className='absolute left-10 top-10 cursor-pointer'>

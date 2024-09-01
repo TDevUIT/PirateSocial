@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight, XIcon } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import React from 'react';
 
 interface MyProfileProps {
@@ -11,19 +11,19 @@ const MyProfile: React.FC<MyProfileProps> = ({ showMyProfile, setShowMyProfile }
 
   return (
     <aside className="min-w-1/4 w-full md:w-1/4 h-screen bg-white shadow-md overflow-y-auto fixed sidebar z-50">
-      <div className="flex justify-end px-6 py-4 items-center">
+      <div className="flex justify-between px-6 py-4 items-center mb-4 border-b">
+      <h2 className="text-xl font-semibold text-gray-700">Profile</h2>
         <ArrowLeft
           onClick={() => setShowMyProfile(false)} 
           className="cursor-pointer w-6 h-6 text-gray-600 hover:text-gray-800 transition-all duration-300" 
         />
       </div>
       <div className="px-6">
-        <h2 className="text-xl font-bold mb-4">Profile</h2>
+        <h3 className="text-lg font-semibold mb-2">Avatar</h3>
         <div className="flex items-center gap-x-2 mb-4">
           <div className="flex items-center rounded-full p-4 bg-black"></div>
           <button className="text-blue-500 hover:underline">Change Image</button>
         </div>
-
         <div className="mb-6">
           <h3 className="text-lg font-semibold mb-2">Basic Info</h3>
           <div className="mb-4">
