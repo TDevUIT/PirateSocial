@@ -71,3 +71,8 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+## dbdiagram: version 25/8/2024 -test gateway 
+<img width="701" alt="image" src="https://github.com/user-attachments/assets/7c8289ab-d6d0-4aa7-85ce-3ba4c2a2178d">
+
+
