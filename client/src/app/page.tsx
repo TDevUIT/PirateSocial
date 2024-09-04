@@ -6,7 +6,7 @@ import Navbar from "@/components/navbar";
 
 export default function Home() {
   return (
-    <div className="w-full h-auto bg-gradient-to-br via-white  from-purple-400 to-blue-500">
+    <div className="w-full h-auto bg-gradient-to-br via-white  from-purple-400 to-blue-500 ">
       <Navbar />
       <HeroSection />
       <Features />

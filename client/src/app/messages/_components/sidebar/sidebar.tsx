@@ -1,12 +1,12 @@
 'use client'
 import { Search } from 'lucide-react';
 import React, { useState } from 'react';
-import ChannelItem from './channelItem';
-import WorkItem from './workItem';
-import GroupItem from './groupItem';
-import ContactItem from './contactItem';
+import ChannelItem from './item/channelItem';
+import WorkItem from './item/workItem';
+import GroupItem from './item/groupItem';
+import ContactItem from './item/contactItem';
 import ProfileSidebar from './profileSidebar';
-import ReelStory from './ReelStory';
+import ReelStory from './option/ReelStory';
 const contacts = [
   { name: 'Lauri Edmon', status: 'Writing...', time: '12.52', unread: 2, imgSrc: '/icons/android-chrome-192x192.png', category: 'Private' },
   { name: 'Julian Gruber', status: 'Send audio...', time: '20.25', unread: 2, imgSrc: '/icons/android-chrome-192x192.png', category: 'Private' },

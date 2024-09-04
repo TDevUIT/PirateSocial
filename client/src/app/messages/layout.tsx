@@ -1,5 +1,5 @@
 'use client';
-import Sidebar from "./_components/sidebar";
+import Sidebar from "./_components/sidebar/sidebar";
 import { useToggle } from "@/context/control";
 import useIsMobile from "@/hook/useIsMobile";
 export default function MessageLayout({
@@ -8,7 +8,6 @@ export default function MessageLayout({
   children: React.ReactNode;
 }>) {
   const { showChildren, toggleChildren } = useToggle();
-  
   const isMobile = useIsMobile();
   return (
     <div className="flex h-screen w-full">

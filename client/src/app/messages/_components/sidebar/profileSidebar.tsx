@@ -1,11 +1,11 @@
 'use client';
 import { XIcon, Settings, Wallet, User, LogOut, Mail, UserPlus, ArrowLeft } from 'lucide-react';
 import React, { useState } from 'react';
-import MyProfile from './myProfile';
-import SavedMessages from './savedMessage';
-import InviteFriends from './inviteFriend';
-import AccountSettings from './settingsAccount';
-import WalletPage from './walletPage';
+import MyProfile from './option/myProfile';
+import SavedMessages from './option/savedMessage';
+import InviteFriends from './option/inviteFriend';
+import AccountSettings from './option/settingsAccount';
+import WalletPage from './option/walletPage';
 
 interface ProfileSidebarProps {
   showProfile: boolean;
