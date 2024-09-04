@@ -5,19 +5,24 @@ import Image from 'next/image';
 interface WalletProps {
   showWallet: boolean;
   setShowWallet: React.Dispatch<React.SetStateAction<boolean>>;
+  isShowOptionProfile: boolean;
+  setIShowOptionProfile: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const WalletPage: React.FC<WalletProps> = ({ showWallet, setShowWallet }) => {
+const WalletPage: React.FC<WalletProps> = ({ showWallet, setShowWallet, setIShowOptionProfile }) => {
   const [toncoinPrice, setToncoinPrice] = useState<number>(0);
   const [nfts, setNfts] = useState<any[]>([]);
   if (!showWallet) return null;
 
   return (
-    <aside className="min-w-1/4 w-full md:w-1/4 h-screen bg-white shadow-md overflow-y-auto fixed sidebar z-50">
+    <aside className="bg-white shadow-md overflow-y-auto fixed sidebar z-20 w-full h-full">
       <div className="flex justify-between px-4 py-3 items-center bg-gray-100 border-b">
         <h2 className="text-xl font-semibold text-gray-800">Wallet</h2>
         <ArrowLeft
-          onClick={() => setShowWallet(false)}
+          onClick={() => {
+            setShowWallet(false)
+            setIShowOptionProfile(false)
+          }}
           className="cursor-pointer w-6 h-6 text-gray-600 hover:text-gray-800 transition duration-300"
         />
       </div>

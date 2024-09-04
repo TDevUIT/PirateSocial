@@ -1,12 +1,13 @@
 'use client'
 import { Search } from 'lucide-react';
 import React, { useState } from 'react';
-import ChannelItem from './channelItem';
-import WorkItem from './workItem';
-import GroupItem from './groupItem';
-import ContactItem from './contactItem';
+import ContactItem from './item/contactItem';
+import GroupItem from './item/groupItem';
+import ChannelItem from './item/channelItem';
+import WorkItem from './item/workItem';
+import ReelStory from './option/ReelStory';
 import ProfileSidebar from './profileSidebar';
-import ReelStory from './ReelStory';
+
 const contacts = [
   { name: 'Lauri Edmon', status: 'Writing...', time: '12.52', unread: 2, imgSrc: '/icons/android-chrome-192x192.png', category: 'Private' },
   { name: 'Julian Gruber', status: 'Send audio...', time: '20.25', unread: 2, imgSrc: '/icons/android-chrome-192x192.png', category: 'Private' },
@@ -143,7 +144,13 @@ const Sidebar = ({className} : {className: any}) => {
           prevReel={prevReel}
         />
       )}
-    {showProfile && <ProfileSidebar showProfile={showProfile} setShowProfile={setShowProfile} />}
+     <div
+        className={`transform ease-in-out duration-300 fixed top-0 left-0 h-full ${
+          showProfile ? 'translate-x-0 w-full md:w-1/4' : '-translate-x-full'
+        }`}
+      >
+        <ProfileSidebar showProfile={showProfile} setShowProfile={setShowProfile} />
+      </div>
 
     </>
   );

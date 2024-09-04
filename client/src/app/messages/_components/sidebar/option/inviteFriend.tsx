@@ -5,6 +5,8 @@ import React from 'react';
 interface MyProfileProps {
   showInviteFriends: boolean;
   setShowInviteFriends: React.Dispatch<React.SetStateAction<boolean>>;
+  isShowOptionProfile: boolean;
+  setIShowOptionProfile: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const InviteFriendCode = "dw;lkad;lwkda;lsdlkawjdk";
@@ -14,17 +16,20 @@ const InviteFriendList = [
   { name: "Sam Johnson", email: "sam@example.com" },
 ];
 
-const InviteFriends: React.FC<MyProfileProps> = ({ showInviteFriends, setShowInviteFriends }) => {
+const InviteFriends: React.FC<MyProfileProps> = ({ showInviteFriends, setShowInviteFriends, setIShowOptionProfile }) => {
     if (!showInviteFriends) return null;
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { showToast } = useToast();
 
     return (
-        <aside className="min-w-1/4 w-full md:w-1/4 h-screen bg-white shadow-md overflow-y-auto fixed sidebar z-50">
+        <aside className="bg-white shadow-md overflow-y-auto fixed sidebar z-20 w-full h-full">
             <div className="flex justify-between px-6 py-4 items-center border-b bg-gray-50">
                 <h2 className="text-lg font-semibold text-gray-700">Invite Friends</h2>
                 <ArrowLeft
-                onClick={() => setShowInviteFriends(false)}
+                onClick={() => {
+                    setShowInviteFriends(false)
+                    setIShowOptionProfile(false)
+                }}
                 className="cursor-pointer w-6 h-6 text-gray-600 hover:text-gray-800 transition-all duration-300"
                 />
             </div>

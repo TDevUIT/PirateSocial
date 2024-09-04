@@ -4,17 +4,22 @@ import React from 'react';
 interface SettingsAccountProps {
   showAccountSettings: boolean;
   setShowAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
+  isShowOptionProfile: boolean;
+  setIShowOptionProfile: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const AccountSettings: React.FC<SettingsAccountProps> = ({ showAccountSettings, setShowAccountSettings }) => {
+const AccountSettings: React.FC<SettingsAccountProps> = ({ showAccountSettings, setShowAccountSettings, setIShowOptionProfile }) => {
   if (!showAccountSettings) return null;
 
   return (
-    <aside className="fixed h-screen bg-white shadow-lg w-full md:w-1/4 z-50 transition-transform transform duration-300 ease-in-out overflow-y-auto sidebar">
+    <aside className="bg-white shadow-md overflow-y-auto fixed sidebar z-20 w-full h-full">
       <div className="flex justify-between px-6 py-4 items-center border-b bg-gray-100">
         <h2 className="text-lg font-semibold text-gray-700">Account Settings</h2>
         <ArrowLeft
-          onClick={() => setShowAccountSettings(false)}
+          onClick={() => {
+            setShowAccountSettings(false)
+            setIShowOptionProfile(false)
+          }}
           className="cursor-pointer w-6 h-6 text-gray-600 hover:text-gray-800 transition-all duration-300"
         />
       </div>
