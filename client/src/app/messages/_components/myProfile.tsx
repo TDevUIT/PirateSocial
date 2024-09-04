@@ -4,17 +4,22 @@ import React from 'react';
 interface MyProfileProps {
   showMyProfile: boolean;
   setShowMyProfile: React.Dispatch<React.SetStateAction<boolean>>;
+  isShowOptionProfile: boolean;
+  setIShowOptionProfile: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const MyProfile: React.FC<MyProfileProps> = ({ showMyProfile, setShowMyProfile }) => {
+const MyProfile: React.FC<MyProfileProps> = ({ showMyProfile, setShowMyProfile ,isShowOptionProfile, setIShowOptionProfile}) => {
   if (!showMyProfile) return null; 
 
   return (
-    <aside className="min-w-1/4 w-full md:w-1/4 h-screen bg-white shadow-md overflow-y-auto fixed sidebar z-50">
+    <aside className="bg-white shadow-md overflow-y-auto fixed sidebar z-20 w-full h-full">
       <div className="flex justify-between px-6 py-4 items-center mb-4 border-b">
       <h2 className="text-xl font-semibold text-gray-700">Profile</h2>
         <ArrowLeft
-          onClick={() => setShowMyProfile(false)} 
+          onClick={() => {
+            setShowMyProfile(false)
+            setIShowOptionProfile(false)
+          }} 
           className="cursor-pointer w-6 h-6 text-gray-600 hover:text-gray-800 transition-all duration-300" 
         />
       </div>

@@ -143,7 +143,13 @@ const Sidebar = ({className} : {className: any}) => {
           prevReel={prevReel}
         />
       )}
-    {showProfile && <ProfileSidebar showProfile={showProfile} setShowProfile={setShowProfile} />}
+     <div
+        className={`transform ease-in-out duration-300 fixed top-0 left-0 h-full ${
+          showProfile ? 'translate-x-0 w-full md:w-1/4' : '-translate-x-full'
+        }`}
+      >
+        <ProfileSidebar showProfile={showProfile} setShowProfile={setShowProfile} />
+      </div>
 
     </>
   );

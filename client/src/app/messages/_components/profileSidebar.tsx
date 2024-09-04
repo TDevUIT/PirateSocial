@@ -1,16 +1,11 @@
 'use client';
-import { XIcon, Settings, Wallet, User, LogOut, Mail, UserPlus } from 'lucide-react';
+import { XIcon, Settings, Wallet, User, LogOut, Mail, UserPlus, ArrowLeft } from 'lucide-react';
 import React, { useState } from 'react';
 import MyProfile from './myProfile';
 import SavedMessages from './savedMessage';
 import InviteFriends from './inviteFriend';
 import AccountSettings from './settingsAccount';
 import WalletPage from './walletPage';
-// import WalletPage from './WalletPage';
-// import SavedMessages from './SavedMessages';
-// import InviteFriends from './InviteFriends';
-// import AccountSettings from './AccountSettings';
-// import LogOutPage from './LogOutPage';
 
 interface ProfileSidebarProps {
   showProfile: boolean;
@@ -18,28 +13,25 @@ interface ProfileSidebarProps {
 }
 
 const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ showProfile, setShowProfile }) => {
-  const [selectedOption, setSelectedOption] = useState<string>('MyProfile');
+  const [selectedOption, setSelectedOption] = useState<string>('');
   const [showMyProfile, setShowMyProfile] = useState<boolean>(false);
   const [showSavedMessages, setShowSavedMessages] = useState<boolean>(false);
   const [showInviteFriends, setshowInviteFriends] = useState<boolean>(false);
   const [showAccountSettings, setShowAccountSettings] = useState<boolean>(false);
   const [showWallet, setShowWallet] = useState<boolean>(false);
+  const [isShowOptionProfile, setIShowOptionProfile] = useState<boolean>(false);
   const renderSelectedOption = () => {
     switch (selectedOption) {
       case 'MyProfile':
-        return (
-          <MyProfile showMyProfile={showMyProfile} setShowMyProfile={setShowMyProfile} />
-        );
+        return <MyProfile showMyProfile={showMyProfile} setShowMyProfile={setShowMyProfile}  isShowOptionProfile={isShowOptionProfile} setIShowOptionProfile={setIShowOptionProfile}/>;
       case 'Wallet':
-        return <WalletPage showWallet={showWallet} setShowWallet={setShowWallet} />;
+        return <WalletPage showWallet={showWallet} setShowWallet={setShowWallet} isShowOptionProfile={isShowOptionProfile} setIShowOptionProfile={setIShowOptionProfile}  />;
       case 'SavedMessages':
-        return <SavedMessages showSavedMessages={showSavedMessages} setShowSavedMessages={setShowSavedMessages}/>;
+        return <SavedMessages showSavedMessages={showSavedMessages} setShowSavedMessages={setShowSavedMessages} isShowOptionProfile={isShowOptionProfile} setIShowOptionProfile={setIShowOptionProfile}/>;
       case 'InviteFriends':
-        return <InviteFriends showInviteFriends={showInviteFriends} setShowInviteFriends={setshowInviteFriends}/>;
+        return <InviteFriends showInviteFriends={showInviteFriends} setShowInviteFriends={setshowInviteFriends} isShowOptionProfile={isShowOptionProfile} setIShowOptionProfile={setIShowOptionProfile} />;
       case 'AccountSettings':
-        return <AccountSettings showAccountSettings={showAccountSettings} setShowAccountSettings={setShowAccountSettings} />;
-      // case 'LogOut':
-      //   return <LogOutPage />;
+        return <AccountSettings showAccountSettings={showAccountSettings} setShowAccountSettings={setShowAccountSettings} isShowOptionProfile={isShowOptionProfile} setIShowOptionProfile={setIShowOptionProfile}/>;
       default:
         return null;
     }
@@ -47,17 +39,16 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ showProfile, setShowPro
 
   return (
     <>
-      <aside
-        className={`fixed left-0 top-0 h-screen bg-gradient-to-b from-gray-200 to-white shadow-lg overflow-y-auto z-20 transform transition-transform duration-300 ease-out ${
-          showProfile ? 'translate-x-0 w-full md:w-1/4' : '-translate-x-full w-0'
-        }`}
-      >
+      <aside className={`bg-gradient-to-b from-gray-200 to-white shadow-lg overflow-y-auto z-20 w-full h-full`}>
         <div className="flex flex-col justify-between w-full h-[20%] bg-gradient-to-r from-blue-500 to-purple-600 p-6">
           <div className="flex justify-between w-full items-center">
             <div className="bg-black w-12 h-12 rounded-full"></div>
-            <XIcon
-              onClick={() => setShowProfile(false)}
-              className="cursor-pointer w-8 h-8 rounded-full hover:bg-gray-300 transition-all duration-300"
+            <ArrowLeft
+              onClick={() => {
+                setShowProfile(false)
+                setIShowOptionProfile(false);
+              }}
+              className="cursor-pointer w-8 h-8 rounded-full transition-all duration-300 text-white"
             />
           </div>
           <div className="flex justify-start items-start text-gray-300">
@@ -70,45 +61,48 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ showProfile, setShowPro
               label="My Profile"
               icon={<User className="w-5 h-5 mr-3" />}
               onClick={() => {
-                setSelectedOption('MyProfile')
-                setShowMyProfile(true)
+                setSelectedOption('MyProfile');
+                setShowMyProfile(true);
+                setIShowOptionProfile(true);
               }}
             />
             <SidebarOption
               label="Wallet"
               icon={<Wallet className="w-5 h-5 mr-3" />}
               onClick={() => {
-                  setSelectedOption('Wallet')
-                  setShowWallet(true)
-                }
-              }
+                setSelectedOption('Wallet');
+                setShowWallet(true);
+                setIShowOptionProfile(true);
+
+              }}
             />
             <SidebarOption
               label="Saved Messages"
               icon={<Mail className="w-5 h-5 mr-3" />}
-              onClick={() => 
-                {
-                setSelectedOption('SavedMessages')
-                setShowSavedMessages(true)
-
-               }}
+              onClick={() => {
+                setSelectedOption('SavedMessages');
+                setShowSavedMessages(true);
+                setIShowOptionProfile(true);
+              }}
             />
             <SidebarOption
               label="Invite Friends"
               icon={<UserPlus className="w-5 h-5 mr-3" />}
               onClick={() => {
-                setSelectedOption('InviteFriends')
-                setshowInviteFriends(true)
+                setSelectedOption('InviteFriends');
+                setshowInviteFriends(true);
+                setIShowOptionProfile(true);
               }}
             />
             <SidebarOption
               label="Account Settings"
               icon={<Settings className="w-5 h-5 mr-3" />}
               onClick={() => {
-                setSelectedOption('AccountSettings')
-                setShowAccountSettings(true)
+                setSelectedOption('AccountSettings');
+                setShowAccountSettings(true);
+                setIShowOptionProfile(true);
               }}
-              />
+            />
             <SidebarOption
               label="Log Out"
               icon={<LogOut className="w-5 h-5 mr-3" />}
@@ -117,8 +111,13 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ showProfile, setShowPro
           </ul>
         </div>
       </aside>
-
-      {showProfile && renderSelectedOption()}
+      <div
+        className={`transform ease-in-out duration-300 fixed top-0 bg-gray-200 left-0 h-full ${
+          isShowOptionProfile ? 'translate-x-0 w-full' : '-translate-x-full w-0'
+        }`}
+      >
+        {isShowOptionProfile && renderSelectedOption()}
+      </div>
     </>
   );
 };
