@@ -1,7 +1,7 @@
 'use client';
-import Sidebar from "./_components/sidebar";
 import { useToggle } from "@/context/control";
 import useIsMobile from "@/hook/useIsMobile";
+import Sidebar from "./_components/sidebar/sidebar";
 export default function MessageLayout({
   children,
 }: Readonly<{
