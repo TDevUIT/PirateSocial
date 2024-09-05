@@ -2,9 +2,9 @@
 import { ArrowBigDown } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import { Suspense } from 'react';
 import { FaArrowLeft } from 'react-icons/fa6';
-
+import Loading from '../loading';
 const AuthLayout = ({
   children
 }: Readonly<{
@@ -18,9 +18,10 @@ const AuthLayout = ({
             <FaArrowLeft />
           </div>
         </Link>
-        {children}
+        <Suspense fallback={<Loading />}>
+          {children}
+        </Suspense>
       </div>
-
       <div className="flex-grow h-full overflow-hidden relative w-full bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 flex flex-col justify-center items-start p-8 text-white">
         <div className="flex-shrink-0 w-full h-full absolute inset-0 z-0">
           <Image

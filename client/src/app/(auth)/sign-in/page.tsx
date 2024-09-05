@@ -28,26 +28,21 @@ const SignInPage: React.FC = () => {
   });
 
   const [rememberMe, setRememberMe] = useState<boolean>(false);
+
   useEffect(() => {
     const storedEmail = localStorage.getItem("rememberEmail");
-    const storedPassword = localStorage.getItem("rememberPassword");
-    
-    if (storedEmail && storedPassword) {
-      console.log("Stored credentials found");
+    if (storedEmail) {
       setValue("email", storedEmail);
-      setValue("password", storedPassword);
     }
   }, [setValue]);
 
-  const onSubmit = (data: SignInFormData) => {
+  const onSubmit = async (data: SignInFormData) => {
     if (rememberMe) {
       localStorage.setItem("rememberEmail", data.email);
-      localStorage.setItem("rememberPassword", data.password);
     } else {
       localStorage.removeItem("rememberEmail");
-      localStorage.removeItem("rememberPassword");
     }
-    console.log(data); 
+    console.log(data);
   };
 
   return (
@@ -59,7 +54,7 @@ const SignInPage: React.FC = () => {
           <div className="flex flex-col gap-y-4 w-full justify-between">
             <div className="mt-6 flex w-full gap-x-4">
               <div className="w-full">
-                <Link href="#" className="text-sm font-medium w-full">
+                <Link href={`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/google`}  className="text-sm font-medium w-full">
                   <button className="w-full flex items-center justify-center space-x-2 px-4 
                   py-2 rounded-md shadow-lg hover:bg-white transition">
                     <FcGoogle className="w-5 h-5" /> 
