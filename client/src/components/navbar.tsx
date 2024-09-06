@@ -3,7 +3,7 @@ import { Button } from './ui/button';
 
 const Navbar = () => {
   return (
-    <nav className='h-[10vh] flex justify-between items-center px-4 container'>
+    <nav className='h-[10vh] flex justify-between items-center max-w-7xl mx-auto bg-base-100 px-8'>
       <div className='text-2xl font-bold'>
         Pirate Social
       </div>

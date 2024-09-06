@@ -7,5 +7,14 @@ const withPWA = withPWAInit({
 });
 
 export default withPWA({
-  // Your Next.js config
+  reactStrictMode: true,
+  images: {
+    domains: [
+      "lh3.googleusercontent.com",
+      "pbs.twimg.com",
+      "images.unsplash.com",
+      "logos-world.net",
+      "plus.unsplash.com"
+    ],
+  },
 });
