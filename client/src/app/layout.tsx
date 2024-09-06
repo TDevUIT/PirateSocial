@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import { ToggleProvider } from "@/context/control";
 import ToastContainer from "@/components/ToastContainer";
 import { ToastProvider } from "@/context/ToastContext";
+import Loading from "./loading";
+import { Suspense } from "react";
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -69,6 +71,7 @@ export default function RootLayout({
             <ToastProvider>
               <div className="flex h-screen">
                 {children}
+                <Suspense fallback={<Loading />}/>
               </div>
               <ToastContainer />
             </ToastProvider>

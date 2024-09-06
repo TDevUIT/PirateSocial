@@ -47,7 +47,7 @@ const SignUpPage: React.FC = () => {
           <div className="flex flex-col gap-y-4 w-full justify-between">
             <div className="mt-6 flex w-full gap-x-4">
               <div className="w-full">
-                <Link href="#" className="text-sm font-medium w-full">
+                <Link href={`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/google`} className="text-sm font-medium w-full">
                   <button className="w-full flex items-center justify-center space-x-2 px-4 
                   py-2 rounded-md shadow-lg hover:bg-white transition">
                     <FcGoogle className="w-5 h-5" /> 
