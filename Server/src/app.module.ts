@@ -10,8 +10,15 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [UserModule, ChatModule, RoomModule, RoomUserModule,PrismaModule, AuthModule],
+  imports: [
+    UserModule,
+    ChatModule,
+    RoomModule,
+    RoomUserModule,
+    PrismaModule,
+    AuthModule,
+  ],
   controllers: [AppController],
-  providers: [AppService,PrismaService],
+  providers: [AppService, PrismaService],
 })
 export class AppModule {}

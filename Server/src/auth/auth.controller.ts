@@ -21,14 +21,19 @@ export class AuthController {
 
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
-  async googleLoginCallback(@Request() req: ExpressRequest, @Res() res: Response) {
+  async googleLoginCallback(
+    @Request() req: ExpressRequest,
+    @Res() res: Response,
+  ) {
     const googleToken = req.user?.accessToken;
 
-    const authRes = await this.authService.authenticate(googleToken)
+    const authRes = await this.authService.authenticate(googleToken);
 
     res.cookie('access_token', authRes.access_token, { httpOnly: true });
-    res.send({ message: 'Successfully logged in', access_token: authRes.access_token });
-
+    res.send({
+      message: 'Successfully logged in',
+      access_token: authRes.access_token,
+    });
   }
 
   @UseGuards(JWTAuthGuard)
@@ -36,7 +41,7 @@ export class AuthController {
   async getProfile(@Request() req: ExpressRequest) {
     const accessToken = req.cookies['access_token'];
 
-    if (accessToken) return (await this.authService.getUser(req.user?.email));
+    if (accessToken) return await this.authService.getUser(req.user?.email);
 
     throw new UnauthorizedException('No access token');
   }

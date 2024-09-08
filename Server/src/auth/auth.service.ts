@@ -1,22 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import axios from 'axios'
-import { JwtService } from '@nestjs/jwt'
-import { CreateUserDto } from '../user/dto/create-user.dto'
-import { User } from '../user/entity/user.entity'
+import axios from 'axios';
+import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto } from '../user/dto/create-user.dto';
+import { User } from '../user/entity/user.entity';
 import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
-    private usersService: UserService
-  ) {
-  }
+    private usersService: UserService,
+  ) {}
 
   async authenticate(token: string) {
-    const profile = await this.getProfile(token)
+    const profile = await this.getProfile(token);
 
-    let user = await this.usersService.findOneBy(profile.data.email)
+    let user = await this.usersService.findOneBy(profile.data.email);
 
     if (!user) {
       const userDto = <CreateUserDto>{
@@ -26,16 +25,16 @@ export class AuthService {
         familyName: profile.data.family_name,
         picture: profile.data.picture,
         providerId: profile.data.id,
-      }
+      };
 
-      user = await this.usersService.insertOne(userDto)
+      user = await this.usersService.insertOne(userDto);
     }
 
-    const payload = { sub: user.id, email: user.email}
+    const payload = { sub: user.id, email: user.email };
 
     return {
-      access_token: this.jwtService.sign(payload)
-    }
+      access_token: this.jwtService.sign(payload),
+    };
   }
 
   async getNewAccessToken(refreshToken: string): Promise<string> {
@@ -68,7 +67,7 @@ export class AuthService {
 
   async getUser(email: string): Promise<User> {
     try {
-      return await this.usersService.findOneBy(email)
+      return await this.usersService.findOneBy(email);
     } catch (error) {
       console.error('Failed to revoke email:', error);
     }
