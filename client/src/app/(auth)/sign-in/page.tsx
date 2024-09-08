@@ -1,4 +1,5 @@
 'use client'
+
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { FaApple } from "react-icons/fa";
@@ -6,6 +7,8 @@ import { FcGoogle } from "react-icons/fc";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { io } from "socket.io-client";
+
 
 const schema = z.object({
   email: z.string().min(3, { message: "Email is required" }).email("Invalid email address"),
@@ -31,19 +34,42 @@ const SignInPage: React.FC = () => {
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("rememberEmail");
-    if (storedEmail) {
+    const storedPassword = localStorage.getItem("rememberPassword");
+
+    if (storedEmail && storedPassword) {
       setValue("email", storedEmail);
+      setValue("password", storedPassword);
     }
   }, [setValue]);
 
-  const onSubmit = async (data: SignInFormData) => {
+  const onSubmit = (data: SignInFormData) => {
     if (rememberMe) {
       localStorage.setItem("rememberEmail", data.email);
+      localStorage.setItem("rememberPassword", data.password);
     } else {
       localStorage.removeItem("rememberEmail");
+      localStorage.removeItem("rememberPassword");
     }
-    console.log(data);
+    console.log(data); 
   };
+
+  const handleGoogleSignIn = () => {
+    window.location.href = "http://localhost:3001/auth/google";
+  };
+
+  const connectToSocket = () => {
+    const token = localStorage.getItem("jwt_token");
+    const socket = io('http://localhost:3000', {
+      extraHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    socket.on('connect', () => {
+      console.log('Connected to WebSocket server');
+    });
+  };
+
 
   return (
     <div className="flex items-center justify-center h-screen w-full p-8">
@@ -54,13 +80,18 @@ const SignInPage: React.FC = () => {
           <div className="flex flex-col gap-y-4 w-full justify-between">
             <div className="mt-6 flex w-full gap-x-4">
               <div className="w-full">
-                <Link href={`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/google`}  className="text-sm font-medium w-full">
-                  <button className="w-full flex items-center justify-center space-x-2 px-4 
-                  py-2 rounded-md shadow-lg hover:bg-white transition">
+                <a 
+                  href="http://localhost:3001/auth/google" 
+                  className="text-sm font-medium w-full"
+                >
+                  <button 
+                    type="button" 
+                    className="w-full flex items-center justify-center space-x-2 px-4 py-2 rounded-md shadow-lg hover:bg-white transition"
+                  >
                     <FcGoogle className="w-5 h-5" /> 
                     <span>Sign in with Google</span>
                   </button>
-                </Link>
+                </a>
               </div>
               <div className="w-full">
                 <Link href="#" className="text-sm font-medium w-full">
@@ -132,7 +163,6 @@ const SignInPage: React.FC = () => {
           >
             Sign in to your account
           </button>
-          
         </form>
         <p className="mt-6 text-center text-sm text-gray-600">
           Don&apos;t have an account?{" "}
