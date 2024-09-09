@@ -53,29 +53,31 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('sendMessage')
   async handleMessage(
-    @MessageBody() message: { content: string; roomId: string },
+    @MessageBody() message: { message: string; roomId: string },
     @ConnectedSocket() client: Socket,
   ) {
     const userProfile = client.data.user;
+
     console.log(
       `Received message from client ${client.id} (user profile: ${JSON.stringify(userProfile.id)}):`,
       message,
     );
 
     try {
+      console.log("Content: ", message);
       await this.chatService.sendMessage(
         parseInt(message.roomId, 10),
         userProfile.id,
-        message.content,
+        message.message,
       );
 
       this.server.to(message.roomId).emit('receiveMessage', {
-        content: message.content,
+        content: message.message,
         sender: userProfile.email,
       });
 
       console.log(`Message sent to room ${message.roomId}:`, {
-        content: message.content,
+        content: message.message,
         sender: userProfile.email,
       });
     } catch (error) {
