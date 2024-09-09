@@ -1,6 +1,7 @@
 'use client';
 import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
+import { io, Socket } from 'socket.io-client';
 import { useToggle } from '@/context/control';
 import Message from '@/app/messages/_components/message';
 import { Paperclip, Smile, XIcon, ArrowLeft, OptionIcon, Option } from 'lucide-react';
@@ -13,18 +14,20 @@ import { EllipsisVertical } from 'lucide-react';
 
 interface Message {
   id: number;
-  text: string;
-  time: string;
+  message: string;
+  createdAt: string;
+  senderId?: string
+  roomId?: number
   file?: { name: string; type: string; size: number } | null;
+}
+interface UserProfile {
+  picture: string;
+  email: string;
 }
 
 const MessagePage = () => {
   const { toggleChildren } = useToggle();  
-  const [messages, setMessages] = useState<Array<Message>>([
-    { id: 1, text: "Don't forget to check on all responsive sizes.", time: 'May 6' },
-    { id: 2, text: 'Use the buttons above the editor to test on them', time: 'May 7' }
-  ]);
-
+  const [messages, setMessages] = useState<Array<Message>>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -33,33 +36,119 @@ const MessagePage = () => {
   const inputRef = useRef<any>(null);
   const [showFileInMessage, setShowFileInMessage] = useState(false);
 
+  const socketRef = useRef<Socket | null>(null); 
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [roomId, setRoomId] = useState<number>(1);
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/chat/${roomId}`, {
+          method: 'GET',
+          credentials: 'include', 
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setMessages(data); 
+        } else {
+          console.error('Failed to fetch messages:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching messages:', error);
+      }
+    };
+  
+    fetchMessages();
+  }, [roomId]);
+  
+  useEffect(() => {
+    const connectToSocket = (userProfile: UserProfile) => {
+      if (userProfile && !socketRef.current) {
+        const newSocket = io('http://localhost:3001', {
+          auth: {
+            profile: userProfile,
+          },
+        });
+        socketRef.current = newSocket;
+        newSocket.on('connect', () => {
+          console.log('Connected to WebSocket server');
+          newSocket.emit('joinRoom', { roomId });
+        });
+        newSocket.on('receiveMessage', (message: Message) => {
+          console.log('Received: ', message);
+          setMessages((prevMessages) => [...prevMessages, message]);
+        });
+        newSocket.on('joinedRoom', (roomId: string) => {
+          console.log(`Joined room ${roomId}`);
+        });
+        newSocket.on('leftRoom', (roomId: string) => {
+          console.log(`Left room ${roomId}`);
+        });
+      }
+    };
+  
+    const fetchProfile = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/auth/profile', {
+          method: 'GET',
+          credentials: 'include',
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setProfile(data);
+          connectToSocket(data); 
+        } else {
+          console.error('Failed to fetch profile:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      }
+    };
+  
+    fetchProfile();
+  }, [roomId]); 
+  
+  
+  useEffect(() => {
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
+    };
+  }, []);
+
+  const handleSendMessage = () => {
+    if (inputMessage.trim() !== '' || selectedFile) {
+      const messageData = {
+        message: inputMessage.trim(),
+        file: selectedFile ? {
+          name: selectedFile.name,
+          type: selectedFile.type,
+          size: selectedFile.size,
+        } : null,
+        roomId,
+      };
+      console.log("Message: ", messageData.message)
+      if (socketRef.current) {
+        socketRef.current.emit('sendMessage', messageData); 
+      }
+  
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { id: prevMessages.length + 1, message: inputMessage, createdAt: new Date().toLocaleTimeString(), file: messageData.file },
+      ]);
+  
+      setInputMessage('');
+      setSelectedFile(null);
+      setShowFileInMessage(false);
+    }
+  };
+  
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages]);
-
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, []);
-
-  const handleSendMessage = () => {
-    if (inputMessage.trim() !== '' || selectedFile) {
-      const newMessage: Message = {
-        id: messages.length + 1,
-        text: inputMessage,
-        time: new Date().toLocaleTimeString(),
-        file: selectedFile ? { name: selectedFile.name, type: selectedFile.type, size: selectedFile.size } : null,
-      };
-      setMessages([...messages, newMessage]);
-      setInputMessage('');
-      setSelectedFile(null);
-      setShowFileInMessage(false);
-      setShowPaperclipUpload(false);
-    }
-  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -118,21 +207,18 @@ const MessagePage = () => {
           <div>
             <EllipsisVertical className='cursor-pointer w-5 h-5'/>
           </div>
-        
-        
         </div>
       </div>
-
+      
       <div className="flex-grow overflow-y-auto p-4 space-y-4 bg-gray-300 sidebar">
         {messages.map((message) => (
           <div key={message.id}>
-            <Message key={message.id} text={message.text} time={message.time} file={message.file} />
+            <Message key={message.id} text={message.message} time={message.createdAt} file={message.file} />
           </div>
         ))}
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input Section */}
       <div className="px-4 py-2 rounded-b-lg shadow-md">
         {showFileInMessage && selectedFile && (
           <div className="flex gap-x-4 justify-between items-center w-full mr-2">
