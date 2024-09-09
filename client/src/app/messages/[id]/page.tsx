@@ -16,7 +16,7 @@ interface Message {
   id: number;
   message: string;
   createdAt: string;
-  senderId?: string
+  sender?: string
   roomId?: number
   file?: { name: string; type: string; size: number } | null;
 }
@@ -72,7 +72,7 @@ const MessagePage = () => {
         socketRef.current = newSocket;
         newSocket.on('connect', () => {
           console.log('Connected to WebSocket server');
-          newSocket.emit('joinRoom', { roomId });
+          newSocket.emit('joinRoom', {roomId: 1});
         });
         newSocket.on('receiveMessage', (message: Message) => {
           console.log('Received: ', message);
@@ -128,16 +128,14 @@ const MessagePage = () => {
         } : null,
         roomId,
       };
-      console.log("Message: ", messageData.message)
+      
       if (socketRef.current) {
         socketRef.current.emit('sendMessage', messageData); 
       }
-  
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { id: prevMessages.length + 1, message: inputMessage, createdAt: new Date().toLocaleTimeString(), file: messageData.file },
-      ]);
-  
+      // setMessages((prevMessages) => [
+      //   ...prevMessages,
+      //   { id: prevMessages.length + 1, message: inputMessage, createdAt: new Date().toLocaleTimeString(), file: messageData.file },
+      // ]);
       setInputMessage('');
       setSelectedFile(null);
       setShowFileInMessage(false);
@@ -213,7 +211,7 @@ const MessagePage = () => {
       <div className="flex-grow overflow-y-auto p-4 space-y-4 bg-gray-300 sidebar">
         {messages.map((message) => (
           <div key={message.id}>
-            <Message key={message.id} text={message.message} time={message.createdAt} file={message.file} />
+            <Message key={message.createdAt} text={message.message} time={message.createdAt} file={message.file} />
           </div>
         ))}
         <div ref={messagesEndRef} />

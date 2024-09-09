@@ -12,7 +12,14 @@ import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
 import { ChatService } from 'src/chat/chat.service';
 import { RoomService } from 'src/room/room.service';
-
+interface Message {
+  id: number;
+  message: string;
+  createdAt: string;
+  sender?: string
+  roomId?: number
+  file?: any;
+}
 @WebSocketGateway({
   cors: {
     origin: '*',
@@ -64,7 +71,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     );
 
     try {
-      console.log("Content: ", message);
+      console.log('Content: ', message);
       await this.chatService.sendMessage(
         parseInt(message.roomId, 10),
         userProfile.id,
@@ -72,7 +79,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       );
 
       this.server.to(message.roomId).emit('receiveMessage', {
-        content: message.message,
+        id: userProfile.id + message.roomId + message.message.length,
+        createdAt: new Date(),
+        roomId: 1,
+        message: message.message,
         sender: userProfile.email,
       });
 
@@ -88,24 +98,25 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('joinRoom')
   async handleJoinRoom(
-    @MessageBody() roomId: string,
+    @MessageBody() roomId: { roomId: string },
     @ConnectedSocket() client: Socket,
   ) {
     const userProfile = client.data.user;
+
     console.log(
-      `Client ${client.id} (user profile: ${JSON.stringify(userProfile.id)}) joining room ${roomId}`,
+      `Client ${client.id} (user profile: ${JSON.stringify(userProfile.id)}) joining room ${roomId.roomId}`,
     );
 
     try {
       await this.roomService.addUserToRoom(
-        parseInt(roomId, 10),
+        parseInt(roomId.roomId, 10),
         userProfile.id,
       );
-      client.join(roomId);
-      client.emit('joinedRoom', roomId);
+      client.join(roomId.roomId);
+      client.emit('joinedRoom', { roomId: roomId.roomId });
 
       console.log(
-        `Client ${client.id} (user profile: ${JSON.stringify(userProfile.id)}) joined room ${roomId}`,
+        `Client ${client.id} (user profile: ${JSON.stringify(userProfile.id)}) successfully joined room ${roomId.roomId}`,
       );
     } catch (error) {
       console.error('Failed to join room:', error.message);
