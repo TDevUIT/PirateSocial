@@ -12,6 +12,8 @@ export class RoomService {
   }
 
   async addUserToRoom(roomId: number, userId: number) {
+    console.log(roomId);
+  
     let room = await this.prisma.room.findUnique({
       where: { id: roomId },
     });
@@ -20,13 +22,28 @@ export class RoomService {
         data: { id: roomId, name: `Room ${roomId}` },
       });
     }
+  
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
     });
-
+  
     if (!user) {
       throw new NotFoundException(`User with id ${userId} does not exist`);
     }
+  
+    const existingRoomUser = await this.prisma.roomUser.findUnique({
+      where: {
+        roomId_userId: {
+          roomId,
+          userId,
+        },
+      },
+    });
+  
+    if (existingRoomUser) {
+      return existingRoomUser;
+    }
+  
     return this.prisma.roomUser.create({
       data: {
         roomId,
@@ -34,6 +51,7 @@ export class RoomService {
       },
     });
   }
+  
 
   async removeUserFromRoom(roomId: number, userId: number) {
     return this.prisma.roomUser.deleteMany({
