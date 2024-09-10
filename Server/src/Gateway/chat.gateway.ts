@@ -12,14 +12,14 @@ import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
 import { ChatService } from 'src/chat/chat.service';
 import { RoomService } from 'src/room/room.service';
-interface Message {
-  id: number;
-  message: string;
-  createdAt: string;
-  sender?: string
-  roomId?: number
-  file?: any;
-}
+// interface Message {
+//   id: number;
+//   message: string;
+//   createdAt: string;
+//   sender?: string;
+//   roomId?: number;
+//   file?: any;
+// }
 @WebSocketGateway({
   cors: {
     origin: '*',
@@ -71,8 +71,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     );
 
     try {
-      console.log('Content: ', message);
-      await this.chatService.sendMessage(
+      //  console.log('Content: ', message);
+      const sending = await this.chatService.sendMessage(
         parseInt(message.roomId, 10),
         userProfile.id,
         message.message,
@@ -80,10 +80,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
       this.server.to(message.roomId).emit('receiveMessage', {
         id: userProfile.id + message.roomId + message.message.length,
-        createdAt: new Date(),
+        createdAt: sending.createdAt,
         roomId: 1,
         message: message.message,
         sender: userProfile.email,
+        picture: userProfile.picture,
       });
 
       console.log(`Message sent to room ${message.roomId}:`, {

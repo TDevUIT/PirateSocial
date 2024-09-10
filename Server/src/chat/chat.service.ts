@@ -5,17 +5,18 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class ChatService {
   constructor(private readonly prisma: PrismaService) {}
   async sendMessage(roomId: number, senderId: number, message: string) {
-    console.log("Message: ", message);
+    console.log('Message: ', message);
     if (!message) {
-      throw new Error("Message content is missing");
+      throw new Error('Message content is missing');
     }
-    return this.prisma.chat.create({
+    const sendingdata = await this.prisma.chat.create({
       data: {
         roomId,
         senderId,
         message,
       },
     });
+    return sendingdata;
   }
 
   async getMessagesByRoom(roomId: number) {
