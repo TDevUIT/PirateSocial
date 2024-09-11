@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 const Hero = () => (
   <section className="max-w-7xl h-auto mx-auto bg-base-100 flex flex-col lg:flex-row items-center justify-center gap-16 lg:gap-20 px-8 py-6 lg:py-20 ">
@@ -10,9 +11,11 @@ const Hero = () => (
       <p className="text-lg opacity-80 leading-relaxed">
         Join a community of adventurers and free spirits! Connect with those who have a pirate&apos;s mind, ready to explore new horizons and create unforgettable stories. Set sail with us and discover a world of endless possibilities!
       </p>
-      <Button>
-        Get Started
-      </Button>
+      <Link href='/sign-in'>
+        <Button>
+          Get Started
+        </Button>
+      </Link>
     </div>
     <div className="lg:w-full mb-10 md:block hidden">
       <Image

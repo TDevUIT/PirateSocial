@@ -30,10 +30,11 @@ export class AuthController {
     const authRes = await this.authService.authenticate(googleToken);
 
     res.cookie('access_token', authRes.access_token, { httpOnly: true });
-    res.send({
-      message: 'Successfully logged in',
-      access_token: authRes.access_token,
-    });
+    res.redirect(`${process.env.Client_URL}/messages`);
+    // res.send({
+    //   message: 'Successfully logged in',
+    //   access_token: authRes.access_token,
+    // });
   }
 
   @UseGuards(JWTAuthGuard)

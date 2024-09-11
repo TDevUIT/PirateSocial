@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useToggle } from '@/context/control';
-import Message from '@/app/messages/_components/message';
+import MessageCard from '@/app/messages/_components/message';
 import { Paperclip, Smile, XIcon, ArrowLeft, OptionIcon, Option } from 'lucide-react';
 import { TbSend2 } from "react-icons/tb";
 import EmojiPicker from 'emoji-picker-react'; 
@@ -11,20 +11,7 @@ import { BsFiletypeSvg } from "react-icons/bs";
 import { FaRegFilePdf } from "react-icons/fa6";
 import { CiFileOn } from "react-icons/ci";
 import { EllipsisVertical } from 'lucide-react';
-
-interface Message {
-  id: number;
-  message: string;
-  createdAt: string;
-  sender?: string
-  roomId?: number
-  file?: { name: string; type: string; size: number } | null;
-}
-interface UserProfile {
-  picture: string;
-  email: string;
-}
-
+import { Message, UserProfile } from '@/types';
 const MessagePage = () => {
   const { toggleChildren } = useToggle();  
   const [messages, setMessages] = useState<Array<Message>>([]);
@@ -211,7 +198,9 @@ const MessagePage = () => {
       <div className="flex-grow overflow-y-auto p-4 space-y-4 bg-gray-300 sidebar">
         {messages.map((message) => (
           <div key={message.id}>
-            <Message key={message.createdAt} text={message.message} time={message.createdAt} file={message.file} />
+            <MessageCard key={message.createdAt} text={message.message} time={message.createdAt} file={message.file} 
+              picture={message.picture || ''}
+            />
           </div>
         ))}
         <div ref={messagesEndRef} />
@@ -265,7 +254,6 @@ const MessagePage = () => {
             </div>
           )}
         </div>
-
         {showPaperclipUpload && (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="relative flex items-center justify-center md:w-[450px] md:h-64">

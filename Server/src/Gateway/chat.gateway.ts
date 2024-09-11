@@ -71,7 +71,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     );
 
     try {
-      //  console.log('Content: ', message);
       const sending = await this.chatService.sendMessage(
         parseInt(message.roomId, 10),
         userProfile.id,
@@ -79,7 +78,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       );
 
       this.server.to(message.roomId).emit('receiveMessage', {
-        id: userProfile.id + message.roomId + message.message.length,
+        id: sending.id,
         createdAt: sending.createdAt,
         roomId: 1,
         message: message.message,
