@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="  text-black py-10">
       <div className="max-w-6xl mx-auto text-center px-6">
-        <h3 className="text-2xl font-bold mb-6">Pirate Sociaal</h3>
+        <h3 className="text-2xl font-bold mb-6">Pirate Social</h3>
 
         <div className="flex justify-center space-x-8 mb-6">
           <Link href="#" className=" hover:text-teal-200 transition-colors duration-300">

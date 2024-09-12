@@ -1,9 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
+import { caltimeAgo } from '@/lib/timeAgo';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { FaRegFilePdf } from "react-icons/fa6";
-
 interface FileInfo {
   name: string;
   type: string;
@@ -13,21 +14,37 @@ interface FileInfo {
 interface MessageProps {
   text: string;
   time: string;
+  picture: string;
   file?: FileInfo | null;
 }
 
-const Message = ({ text, time, file }: MessageProps) => {
+const MessageCard = ({ text, time, file, picture }: MessageProps) => {
   const isImage = file && file.type.startsWith('image/');
   const isPDF = file && file.type === 'application/pdf';
-
+  console.log("Picture: ", picture);
   return (
     <div className="flex flex-col items-start">
-      <div className="text-xs text-gray-500">{time}</div>
+      <div className="text-xs text-gray-500">{caltimeAgo(time as string)}</div>
         <div className="flex gap-x-2">
-          
-          <div className='h-[28px] w-[28px] rounded-full bg-black mt-3'>
-            
-          </div>
+        <div className='h-[28px] w-[28px] rounded-full mt-3'>
+          {picture ? (
+            <img 
+              src={picture}
+              alt='User picture'
+              className='w-full h-full object-cover'
+              onError={(e) => {
+                e.currentTarget.src = '/icons/android-chrome-192x192.png'; 
+              }}
+            />
+          ) : (
+            <img 
+              src='/icons/android-chrome-192x192.png' 
+              alt='Default avatar'
+              className='w-full h-full object-cover'
+            />
+          )}
+        </div>
+
           <div className='flex flex-col'>
             {file && (
                 <div className="flex items-center mt-2 max-w-[512px] max-h-[512px]">
@@ -68,4 +85,4 @@ const Message = ({ text, time, file }: MessageProps) => {
   );
 };
 
-export default Message;
+export default MessageCard;
