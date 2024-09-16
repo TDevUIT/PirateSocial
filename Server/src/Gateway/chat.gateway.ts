@@ -76,14 +76,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         userProfile.id,
         message.message,
       );
-
       this.server.to(message.roomId).emit('receiveMessage', {
         id: sending.id,
         createdAt: sending.createdAt,
         roomId: 1,
+        senderId: sending.senderId,
         message: message.message,
-        sender: userProfile.email,
-        picture: userProfile.picture,
+        sender: {
+          email: sending.sender.email,
+          picture: sending.sender.picture,
+        },
       });
 
       console.log(`Message sent to room ${message.roomId}:`, {

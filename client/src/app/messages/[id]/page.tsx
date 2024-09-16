@@ -44,7 +44,6 @@ const MessagePage = () => {
         console.error('Error fetching messages:', error);
       }
     };
-  
     fetchMessages();
   }, [roomId]);
   
@@ -199,7 +198,7 @@ const MessagePage = () => {
         {messages.map((message) => (
           <div key={message.id}>
             <MessageCard key={message.createdAt} text={message.message} time={message.createdAt} file={message.file} 
-              picture={message.picture || ''}
+              picture={message.sender.picture || ''}
             />
           </div>
         ))}
