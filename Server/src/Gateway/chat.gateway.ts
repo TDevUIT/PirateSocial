@@ -79,7 +79,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       this.server.to(message.roomId).emit('receiveMessage', {
         id: sending.id,
         createdAt: sending.createdAt,
-        roomId: 1,
+        roomId: message.roomId,
         senderId: sending.senderId,
         message: message.message,
         sender: {

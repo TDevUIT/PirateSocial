@@ -1,7 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Param, Get } from '@nestjs/common';
 import { RoomService } from './room.service';
-import { CreateRoomDto } from './dto/create-room.dto';
-import { UpdateRoomDto } from './dto/update-room.dto';
 
 @Controller('room')
 export class RoomController {
@@ -18,5 +16,13 @@ export class RoomController {
     @Param('userId') userId: number,
   ) {
     return this.roomService.addUserToRoom(roomId, userId);
+  }
+  @Get('user/:userId')
+  async getRooms(@Param('userId') userId: number) {
+    return this.roomService.getRooms(userId);
+  }
+  @Get()
+  async getALLRooms() {
+    return this.roomService.getALLRooms();
   }
 }
