@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -5,7 +6,6 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class ChatService {
   constructor(private readonly prisma: PrismaService) {}
   async sendMessage(roomId: number, senderId: number, message: string) {
-    console.log('Message: ', message);
     if (!message) {
       throw new Error('Message content is missing');
     }
@@ -15,14 +15,42 @@ export class ChatService {
         senderId,
         message,
       },
+      select: {
+        id: true,
+        roomId: true,
+        senderId: true,
+        message: true,
+        createdAt: true,
+        sender: {
+          select: {
+            email: true,
+            picture: true,
+          }
+        }
+      },
     });
+    console.log("send Message: ", sendingdata);
     return sendingdata;
   }
 
   async getMessagesByRoom(roomId: number) {
-    return this.prisma.chat.findMany({
+    const messageList = this.prisma.chat.findMany({
       where: { roomId },
+      select: {
+        id: true,
+        roomId: true,
+        senderId: true,
+        message: true,
+        createdAt: true,
+        sender: {
+          select: {
+            email: true,
+            picture: true,
+          }
+        }
+      },
       orderBy: { createdAt: 'asc' },
     });
+    return messageList;
   }
 }
