@@ -34,18 +34,17 @@ const InviteFriends: React.FC<MyProfileProps> = ({ showInviteFriends, setShowInv
                 />
             </div>
             
-            <div className="p-6">
+            <div className="p-6 w-auto">
                 <div className="mb-6">
                 <h3 className="text-md font-medium text-gray-700">Your Invite Code</h3>
                 <div className="mt-2 p-3 bg-gray-100 border border-gray-300 rounded-lg flex items-center justify-between">
-                    <span className="text-gray-600 font-mono">{InviteFriendCode}</span>
                     <button className="text-blue-500 hover:text-blue-700 transition-all duration-300"
                         onClick={() => {
                             navigator.clipboard.writeText(`${InviteFriendCode}`);
                             showToast('Copy success!', 'success')
                         }}
                     >
-                    Copy
+                        <span className="text-gray-600 font-mono">{InviteFriendCode}</span>
                     </button>
                 </div>
                 </div>
@@ -55,12 +54,9 @@ const InviteFriends: React.FC<MyProfileProps> = ({ showInviteFriends, setShowInv
                 <ul className="space-y-4">
                     {InviteFriendList.map((friend, index) => (
                     <li key={index} className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg shadow-sm">
-                        <div>
+                        <button className='text-sm items-start justify-start flex flex-col'>
                         <p className="text-gray-800 font-medium">{friend.name}</p>
                         <p className="text-gray-500 text-sm">{friend.email}</p>
-                        </div>
-                        <button className="text-sm text-white bg-blue-500 hover:bg-blue-600 transition-all duration-300 rounded px-4 py-2">
-                            Contract
                         </button>
                     </li>
                     ))}
