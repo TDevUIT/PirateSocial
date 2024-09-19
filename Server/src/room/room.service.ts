@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { Room } from './entity/room.entity';
 
 @Injectable()
 export class RoomService {
@@ -9,6 +10,27 @@ export class RoomService {
     return this.prisma.room.create({
       data: { name },
     });
+  }
+  async getALLRooms() {
+    return this.prisma.room.findMany();
+  }
+
+  async getRooms(userId: number) {
+    console.log(userId);
+    const numericUserId = Number(userId);
+    const rooms = await this.prisma.roomUser.findMany({
+      where: { userId: numericUserId },
+    });
+    const roomlist: Room[] = [];
+    for (const room of rooms) {
+      const roomData = await this.prisma.room.findUnique({
+        where: { id: room.roomId },
+      });
+      if (roomData) {
+        roomlist.push(roomData);
+      }
+    }
+    return roomlist;
   }
 
   async addUserToRoom(roomId: number, userId: number) {
@@ -51,7 +73,6 @@ export class RoomService {
       },
     });
   }
-
   async removeUserFromRoom(roomId: number, userId: number) {
     return this.prisma.roomUser.deleteMany({
       where: {
