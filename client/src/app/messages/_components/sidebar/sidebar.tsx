@@ -100,7 +100,7 @@ const Sidebar = ({className} : {className: any}) => {
                 src={reel.imgSrc}
                 alt={reel.name}
                 width={200}
-                height={200}
+                // height={200}
                 className="w-8 h-8 rounded-full border-2 border-white cursor-pointer"
                 onClick={() => handleClickReel(index)}
               />
@@ -108,7 +108,7 @@ const Sidebar = ({className} : {className: any}) => {
             </div>
           ))}
         </div> */}
-      <div className='flex items-center justify-between px-6 border-b-2 w-full'>
+      <div className='flex items-center justify-between px-6 border-b-2 w-auto gap-x-6'>
         {['All', 'Work', 'Private', 'Groups', 'Channels'].map(item => (
           <span 
             key={item}

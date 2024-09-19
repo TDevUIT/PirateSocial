@@ -31,7 +31,7 @@ const MessageCard = ({ text, time, file, picture }: MessageProps) => {
             <img 
               src={picture}
               alt='User picture'
-              className='w-full h-full object-cover'
+              className='w-full h-full object-cover rounded-md'
               onError={(e) => {
                 e.currentTarget.src = '/icons/android-chrome-192x192.png'; 
               }}
